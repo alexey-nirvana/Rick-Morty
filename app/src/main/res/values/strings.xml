@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">RickMorty</string>
+    <string name="button_next_screen">Следующий экран</string>
+    <string name="welcome_message"><![CDATA[Добро пожаловать ! Это моё первое приложение - оно показывает фотографии Rick & Morty!]]></string>
+    <string-array name="button_next_screen_array">
+        <item>Следующий экран1</item>
+        <item>Следующий экран2</item>
+        <item>Следующий экран3</item>
+    </string-array>
 </resources>
