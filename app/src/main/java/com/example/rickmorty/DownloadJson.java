@@ -12,13 +12,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 class DownloadJson extends AsyncTask<String, Void, String> {
+
+    ArrayList<String> arrayListName = new ArrayList<>();
+    ArrayList<String> arrayListImage = new ArrayList<>();
+
     @Override
     protected String doInBackground(String... strings) {
-        URL url = null;
+        URL url;
         HttpURLConnection urlConnection = null;
         StringBuilder result = new StringBuilder();
         try {
@@ -47,16 +51,33 @@ class DownloadJson extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
+        //   ArrayList<String> arrayListName = new ArrayList<>();
+        //   ArrayList<String> arrayListImage = new ArrayList<>();
+
         try {
             JSONObject jsonObject = new JSONObject(s);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
-            JSONObject one = jsonArray.getJSONObject(1);
-            String name = one.getString("name");
-            String image = one.getString("image");
-            Log.wtf("Name", name);
-            Log.wtf("Image", image);
+
+            // JSONObject one = jsonArray.getJSONObject(1);
+
+            for (int i = 0; i <= 19; i++) {
+                JSONObject one = jsonArray.getJSONObject(i);
+                String name = one.getString("name");
+                String image = one.getString("image");
+                //  Log.wtf("Name", name);
+                // Log.wtf("Image", image);
+
+                arrayListName.add(name);
+                arrayListImage.add(image);
+            }
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList getName() {
+        return arrayListName;
     }
 }
