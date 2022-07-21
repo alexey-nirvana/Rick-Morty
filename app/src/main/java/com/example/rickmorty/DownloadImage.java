@@ -13,17 +13,13 @@ import java.net.URL;
 class DownloadImage extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(String... strings) {
-        URL url = null;
+        URL url;
         HttpURLConnection urlConnection = null;
-        StringBuilder result = new StringBuilder();
         try {
             url = new URL(strings[0]);
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream inputStream = urlConnection.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            return bitmap;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+            return BitmapFactory.decodeStream(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

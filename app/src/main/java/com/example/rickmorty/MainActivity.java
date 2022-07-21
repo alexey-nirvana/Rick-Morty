@@ -37,13 +37,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         DownloadJson task = new DownloadJson();
         task.execute("https://rickandmortyapi.com/api/character");
 
-       //     Log.wtf("Array", (String) task.getName().get(0));
+        ArrayList<String> name = task.getName();
 
-
+        for (String element : name) {
+            Log.wtf("Names", element);
+        }
+        ;
+        //     Log.wtf("Array", (String) task.getName().get(0));
 
         DownloadImage downloadImage = new DownloadImage();
         try {

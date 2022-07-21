@@ -48,11 +48,11 @@ class DownloadJson extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String s) {
+    public void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        //   ArrayList<String> arrayListName = new ArrayList<>();
-        //   ArrayList<String> arrayListImage = new ArrayList<>();
+         //  ArrayList<String> arrayListName = new ArrayList<>();
+         //  ArrayList<String> arrayListImage = new ArrayList<>();
 
         try {
             JSONObject jsonObject = new JSONObject(s);
@@ -60,24 +60,24 @@ class DownloadJson extends AsyncTask<String, Void, String> {
 
             // JSONObject one = jsonArray.getJSONObject(1);
 
-            for (int i = 0; i <= 19; i++) {
+            for (int i = 0; i <= 20; i++) {
                 JSONObject one = jsonArray.getJSONObject(i);
                 String name = one.getString("name");
                 String image = one.getString("image");
-                //  Log.wtf("Name", name);
-                // Log.wtf("Image", image);
+                Log.wtf("Name", name);
+                Log.wtf("Image", image);
 
                 arrayListName.add(name);
                 arrayListImage.add(image);
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
-    public ArrayList getName() {
+    public ArrayList<String> getName() {
         return arrayListName;
     }
+
 }
