@@ -12,12 +12,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
-    ActionBar actionBar;
-    Button button;
-    ImageView imageView;
+    private ActionBar actionBar;
+    private Button button;
+    private ImageView imageView;
+
+    private DownloadJson.DownloadJsonCompleteListener downloadCompleteListener = models -> {
+        for (CharacterModel model: models){
+            Log.wtf("вот и моделька", model.name);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,37 +41,16 @@ public class MainActivity extends AppCompatActivity {
 
         button = findViewById(R.id.button);
         imageView = findViewById(R.id.imageView);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-                intent.putExtra("Сообщение", "Первый интент");
-                startActivity(intent);
-            }
+        button.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+            intent.putExtra("Сообщение", "Первый интент");
+            startActivity(intent);
         });
     }
 
     private void executeJsonDownload() {
-        DownloadJson task = new DownloadJson();
+        DownloadJson task = new DownloadJson(downloadCompleteListener);
         task.execute("https://rickandmortyapi.com/api/character");
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                    ArrayList<String> name = task.getName();
-
-                    for (String element : name) {
-                        Log.wtf("Names", element);
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        t.start();
-
     }
 
     private void executeImageDownload() {
