@@ -48,11 +48,23 @@ public class MainActivity extends AppCompatActivity {
         DownloadJson task = new DownloadJson();
         task.execute("https://rickandmortyapi.com/api/character");
 
-        ArrayList<String> name = task.getName();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                    ArrayList<String> name = task.getName();
 
-        for (String element : name) {
-            Log.wtf("Names", element);
-        }
+                    for (String element : name) {
+                        Log.wtf("Names", element);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
+
     }
 
     private void executeImageDownload() {
