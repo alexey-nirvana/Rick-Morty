@@ -23,6 +23,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupViews();
+        executeJsonDownload();
+        executeImageDownload();
+    }
+
+    private void setupViews() {
         actionBar = getSupportActionBar();
         actionBar.hide();
 
@@ -36,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
+    private void executeJsonDownload() {
         DownloadJson task = new DownloadJson();
         task.execute("https://rickandmortyapi.com/api/character");
 
@@ -45,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
         for (String element : name) {
             Log.wtf("Names", element);
         }
-        ;
-        //     Log.wtf("Array", (String) task.getName().get(0));
+    }
 
+    private void executeImageDownload() {
         DownloadImage downloadImage = new DownloadImage();
         try {
             Bitmap bitmap = downloadImage.execute("https://rickandmortyapi.com/api/character/avatar/2.jpeg").get();
@@ -57,13 +65,5 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 }
-
-/*
-    public void onClick(View view) {
-        Intent intent = new Intent(this, MainActivity2.class);
-        startActivity(intent);
-    }
- */
