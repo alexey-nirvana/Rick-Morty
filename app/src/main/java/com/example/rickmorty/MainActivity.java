@@ -23,17 +23,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        button = findViewById(R.id.button);
+        imageView = findViewById(R.id.imageView);
+
         setupViews();
         executeJsonDownload();
         executeImageDownload();
-    }
 
-    private void setupViews() {
-        actionBar = getSupportActionBar();
-        actionBar.hide();
-
-        button = findViewById(R.id.button);
-        imageView = findViewById(R.id.imageView);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,17 +38,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+    }
+
+    private void setupViews() {
+        actionBar = getSupportActionBar();
+        actionBar.hide();
     }
 
     private void executeJsonDownload() {
         DownloadJson task = new DownloadJson();
         task.execute("https://rickandmortyapi.com/api/character");
 
-        ArrayList<String> name = task.getName();
-
-        for (String element : name) {
-            Log.wtf("Names", element);
-        }
+        ArrayList<String> name = task.getArrayListName();
     }
 
     private void executeImageDownload() {
@@ -66,4 +64,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    public void onClick(DownloadJson name) {
+        for (String element : name.getArrayListName()) {
+            Log.wtf("Element", element);
+        }
+    }
 }
+

@@ -15,10 +15,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-class DownloadJson extends AsyncTask<String, Void, String> {
+public class DownloadJson extends AsyncTask<String, Void, String> {
+    private DownloadJsonCompleteListener completeListener;
 
-    ArrayList<String> arrayListName = new ArrayList<>();
-    ArrayList<String> arrayListImage = new ArrayList<>();
+    public DownloadJson(DownloadJsonCompleteListener completeListener) {
+        this.completeListener = completeListener;
+    }
+
+    public ArrayList<String> arrayListName = new ArrayList<>();
+    public ArrayList<String> arrayListImage = new ArrayList<>();
 
     @Override
     protected String doInBackground(String... strings) {
@@ -32,11 +37,14 @@ class DownloadJson extends AsyncTask<String, Void, String> {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
+
             while (line != null) {
                 result.append(line);
                 line = reader.readLine();
             }
+
             return String.valueOf(result);
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -44,6 +52,7 @@ class DownloadJson extends AsyncTask<String, Void, String> {
                 urlConnection.disconnect();
             }
         }
+
         return null;
     }
 
@@ -51,14 +60,9 @@ class DownloadJson extends AsyncTask<String, Void, String> {
     public void onPostExecute(String s) {
         super.onPostExecute(s);
 
-         //  ArrayList<String> arrayListName = new ArrayList<>();
-         //  ArrayList<String> arrayListImage = new ArrayList<>();
-
         try {
             JSONObject jsonObject = new JSONObject(s);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
-
-            // JSONObject one = jsonArray.getJSONObject(1);
 
             for (int i = 0; i <= 20; i++) {
                 JSONObject one = jsonArray.getJSONObject(i);
@@ -75,9 +79,16 @@ class DownloadJson extends AsyncTask<String, Void, String> {
         }
 
     }
-
-    public ArrayList<String> getName() {
+    public ArrayList<String> getArrayListName() {
         return arrayListName;
     }
 
+    public ArrayList<String> getArrayListImage() {
+        return arrayListImage;
+    }
+
+    interface DownloadJsonCompleteListener {
+        void onComplete(ArrayList<Character> models);
+    }
 }
+
