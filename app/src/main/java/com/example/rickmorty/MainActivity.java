@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -18,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
     ActionBar actionBar;
     Button button;
     ImageView imageView;
+    String URL = "https://rickandmortyapi.com/api/character";
+    ArrayList<String> names = new ArrayList<>();
+    ArrayList<String> images = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +33,9 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.button);
         imageView = findViewById(R.id.imageView);
 
+
         setupViews();
-        executeJsonDownload();
+        executeJsonDownload(URL);
         executeImageDownload();
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     private void setupViews() {
@@ -46,11 +53,17 @@ public class MainActivity extends AppCompatActivity {
         actionBar.hide();
     }
 
-    private void executeJsonDownload() {
+    private void executeJsonDownload(String url) {
         DownloadJson task = new DownloadJson();
-        task.execute("https://rickandmortyapi.com/api/character");
-
-        ArrayList<String> name = task.getArrayListName();
+        try {
+            String s = task.execute(url).get();
+            getExecuteName(s);
+            getExecuteImage(s);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void executeImageDownload() {
@@ -65,10 +78,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClick(DownloadJson name) {
-        for (String element : name.getArrayListName()) {
-            Log.wtf("Element", element);
+    private ArrayList<String> getExecuteName(String task) {
+        try {
+            JSONObject jsonObject = new JSONObject(task);
+            JSONArray jsonArray = jsonObject.getJSONArray("results");
+
+            for (int i = 0; i < 15; i++) {
+                JSONObject one = jsonArray.getJSONObject(i);
+                String name = one.getString("name");
+                // String image = one.getString("image");
+                names.add(name);
+                Log.wtf("Name", name);
+                //  Log.wtf("Image", image);
+            }
+
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        } finally {
+
         }
+        return names;
+    }
+
+    private ArrayList<String> getExecuteImage(String task) {
+        try {
+            JSONObject jsonObject = new JSONObject(task);
+            JSONArray jsonArray = jsonObject.getJSONArray("results");
+
+            for (int i = 0; i < 18; i++) {
+                JSONObject one = jsonArray.getJSONObject(i);
+              //  String name = one.getString("name");
+                String image = one.getString("image");
+                images.add(image);
+              //  Log.wtf("Name", name);
+                Log.wtf("Image", image);
+            }
+
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        } finally {
+
+        }
+        return images;
     }
 }
-

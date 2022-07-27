@@ -16,11 +16,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class DownloadJson extends AsyncTask<String, Void, String> {
-    private DownloadJsonCompleteListener completeListener;
-
-    public DownloadJson(DownloadJsonCompleteListener completeListener) {
-        this.completeListener = completeListener;
-    }
 
     public ArrayList<String> arrayListName = new ArrayList<>();
     public ArrayList<String> arrayListImage = new ArrayList<>();
@@ -37,7 +32,6 @@ public class DownloadJson extends AsyncTask<String, Void, String> {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
-
             while (line != null) {
                 result.append(line);
                 line = reader.readLine();
@@ -55,21 +49,26 @@ public class DownloadJson extends AsyncTask<String, Void, String> {
 
         return null;
     }
-
+/*
     @Override
     public void onPostExecute(String s) {
         super.onPostExecute(s);
+
+        //  ArrayList<String> arrayListName = new ArrayList<>();
+        //  ArrayList<String> arrayListImage = new ArrayList<>();
 
         try {
             JSONObject jsonObject = new JSONObject(s);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
 
+            // JSONObject one = jsonArray.getJSONObject(1);
+
             for (int i = 0; i <= 20; i++) {
                 JSONObject one = jsonArray.getJSONObject(i);
                 String name = one.getString("name");
                 String image = one.getString("image");
-                Log.wtf("Name", name);
-                Log.wtf("Image", image);
+              //Log.wtf("Name", name);
+              //Log.wtf("Image", image);
 
                 arrayListName.add(name);
                 arrayListImage.add(image);
@@ -79,16 +78,9 @@ public class DownloadJson extends AsyncTask<String, Void, String> {
         }
 
     }
-    public ArrayList<String> getArrayListName() {
+
+    ArrayList<String> getName() {
         return arrayListName;
     }
-
-    public ArrayList<String> getArrayListImage() {
-        return arrayListImage;
-    }
-
-    interface DownloadJsonCompleteListener {
-        void onComplete(ArrayList<Character> models);
-    }
+*/
 }
-
